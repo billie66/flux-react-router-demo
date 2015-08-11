@@ -2,12 +2,19 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var reactify = require('reactify');
 var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var uglify = require('gulp-uglify');
+var sourcemaps  = require('gulp-sourcemaps');
 
 gulp.task('browserify', function() {
     browserify('./src/js/main.js')
       .transform('reactify')
       .bundle()
       .pipe(source('main.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init())
+      .pipe(uglify())
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('dist/js'));
 });
 
